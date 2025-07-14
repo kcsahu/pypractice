@@ -15,9 +15,7 @@ class Permutation:
 
     def swap(self, nums, left, right):
         if left != right:
-            temp = nums[left]
-            nums[left] = nums[right]
-            nums[right] = temp
+            nums[left], nums[right] = nums[right], nums[left]
 
     def permuteUnique(self, nums: list[int]) -> list[list[int]]:
         result = set()

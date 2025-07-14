@@ -19,9 +19,7 @@ class PermutationString:
 
     def swap(self, value: list, left: int, right: int):
         if left != right:
-            temp = value[left]
-            value[left] = value[right]
-            value[right] = temp
+           value[left], value[right] = value[right], value[left]
 
 if __name__ == "__main__":
     obj = PermutationString()

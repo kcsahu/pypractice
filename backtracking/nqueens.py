@@ -1,9 +1,7 @@
 
 def solveNQueens(n : int)-> list:
     queens = [-1 for _ in range(n)]
-    result = list()
-    solve(0, n, queens, result)
-    return result
+    return solve(0, n, queens)
 
 def is_valid(row, col, queens)-> bool:
     for prevRow in range(0, row):
@@ -17,18 +15,22 @@ def generate_board(n: int, queens: list)-> list:
     for row in range(0, n):
         cols = ["." for _ in range(0, n)]
         cols[queens[row]] = "Q"
-        board.append(",".join(cols))
+        board.append(''.join(cols))
     return board
 
 
-def solve(row: int, n: int, queens: list, result: list):
+def solve(row: int, n: int, queens: list) -> list:
     if row == n:
-        result.append(generate_board(n, queens))
+        return generate_board(n, queens)
+    result = []
     for col in range(0, n):
         if is_valid(row, col, queens):
             queens[row] = col
-            solve(row + 1, n, queens, result)
+            board = solve(row + 1, n, queens)
+            if len(board) > 0:
+                result.extend(board)
             queens[row] =  -1
+    return result
 
 def solveNQueensII(n: int)-> int:
     queens = [-1 for _ in range(n)]
