@@ -1,10 +1,8 @@
 from typing import List
 
-from backtracking.nqueens import solve
-
 
 class TrieNode:
-    child : dict[str, 'TrieNode'] = None
+    child: dict[str, 'TrieNode'] = None
     is_end: bool
     word: str
 
@@ -12,8 +10,8 @@ class TrieNode:
         self.child = dict()
         self.is_end = False
 
-class Solution:
 
+class Solution:
     root: TrieNode = TrieNode()
 
     def build_trie(self, words: list):
@@ -51,21 +49,22 @@ class Solution:
         node = node.child.get(tmp, None)
         is_found = False
         if node:
-            is_found = (self.solve(row+1, col, board, node, result)
-                or self.solve(row - 1, col, board, node, result)
-                or self.solve(row, col + 1, board, node, result)
-                or self.solve(row, col -1, board, node, result))
+            is_found = (self.solve(row + 1, col, board, node, result)
+                        or self.solve(row - 1, col, board, node, result)
+                        or self.solve(row, col + 1, board, node, result)
+                        or self.solve(row, col - 1, board, node, result))
         board[row][col] = tmp
         return is_found
 
-if __name__ =="__main__":
+
+if __name__ == "__main__":
     obj = Solution()
-    res = obj.findWords([["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l","v"]],
-                  ["oath","pea","eat","rain"])
+    res = obj.findWords([["o", "a", "a", "n"], ["e", "t", "a", "e"], ["i", "h", "k", "r"], ["i", "f", "l", "v"]],
+                        ["oath", "pea", "eat", "rain"])
     print(res)
     assert ['oath', 'eat'] == res
 
-    res = obj.findWords([["o","a","b","n"],["o","t","a","e"],["a","h","k","r"],["a","f","l","v"]],
-                        ["oa","oaa"])
+    res = obj.findWords([["o", "a", "b", "n"], ["o", "t", "a", "e"], ["a", "h", "k", "r"], ["a", "f", "l", "v"]],
+                        ["oa", "oaa"])
     print(res)
-
+    assert ['oa', 'oaa'] == res
