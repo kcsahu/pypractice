@@ -4,16 +4,15 @@ def permutation(value: str)-> list:
     return permute(value, 0)
 
 def permute(value: list, pos: int):
-    if pos == len(value) - 1:
-        return ''.join(value)
     result = []
-    for index in range(pos, len(value)):
+    if pos == len(value) - 1:
+        result.append(''.join(value))
+        return result
+    for index, item in enumerate(value[pos:], start=pos):
         swap(value, index, pos)
         permutation = permute(value, pos+1)
-        if isinstance(permutation, list):
+        if permutation:
             result.extend(permutation)
-        else:
-            result.append(permutation)
         swap(value, index, pos)
     return result
 
