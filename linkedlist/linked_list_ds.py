@@ -49,6 +49,8 @@ def remove_nth_node(head: ListNode, n: int)->ListNode:
 def rotate_right(head: ListNode, k: int)-> ListNode:
     len = 1;
     node1 = head
+    if not node1:
+        return head
     while node1.next:
         node1 = node1.next
         len += 1
