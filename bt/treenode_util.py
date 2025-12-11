@@ -1,6 +1,6 @@
 from collections import deque
 
-from tree_node import TreeNode
+from bt.tree_node import TreeNode
 
 
 class TreeNodeUtil:
