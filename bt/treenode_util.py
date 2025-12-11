@@ -1,5 +1,4 @@
 from collections import deque
-from typing import Deque
 
 from tree_node import TreeNode
 
@@ -17,6 +16,7 @@ class TreeNodeUtil:
             root.right = TreeNodeUtil.build_tree(arr, right_index)
             return root
         return None
+
     @staticmethod
     def print_tree(root: TreeNode, msg: str = ''):
         res = []

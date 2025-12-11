@@ -1,6 +1,6 @@
+from bt.treenode_util import TreeNodeUtil
+from bt.tree_node import TreeNode
 from collections import deque
-
-from bt.treenode_util import *
 
 
 ## Root -> Left -> Right
@@ -18,6 +18,7 @@ def preorder_traversal(root: TreeNode) -> list[int]:
                 stack.append(node.left)
     return res
 
+
 ## Left -> Root -> Right
 def inorder_traversal(root: TreeNode) -> list[int]:
     res = []
@@ -33,6 +34,8 @@ def inorder_traversal(root: TreeNode) -> list[int]:
                 res.append(node.val)
                 node = node.right
     return res
+
+
 ## Left -> Right -> Root
 def post_order_traversal(root: TreeNode) -> list[int]:
     res = deque()
@@ -47,8 +50,6 @@ def post_order_traversal(root: TreeNode) -> list[int]:
             if node.right:
                 stack.append(node.right)
     return list(res)
-
-
 
 
 if __name__ == "__main__":
