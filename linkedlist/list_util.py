@@ -1,30 +1,23 @@
-class ListNode:
-
-    def __init__(self, value: int):
-        self.value = value
-        self.next: ListNode = None
-
-    def __str__(self):
-        return str(self.value)
+from list_node import ListNode
 
 class ListUtil:
 
     @staticmethod
-    def create_linked_list(arr)-> ListNode:
-        node = ListNode(-1)
-        current = node
-        for value in arr:
-            next_node = ListNode(value)
+    def create_linked_list(arr : list)->ListNode:
+        head = ListNode(-1)
+        current = head
+        for val in arr:
+            next_node = ListNode(val)
             current.next = next_node
-            current = current.next
-        return node.next
+            current = next_node
+        return head.next
 
     @staticmethod
-    def print_linklist(node: ListNode, msg: str = ''):
-        current = node
-        values = []
+    def print_linked_list(head: ListNode, message: str = ''):
+        current = head
+        data = list()
         while current:
-            values.append(current.value)
+            data.append(current.val)
             current = current.next
-        output = "->".join(str(item) for item in values)
-        print(msg, output)
+        data_str = "->".join(str(item) for item in data)
+        print(message, data_str)

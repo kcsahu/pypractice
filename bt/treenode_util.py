@@ -1,50 +1,34 @@
 from collections import deque
-import numpy as np
+from typing import Deque
 
-class TreeNode:
-
-    def __init__(self, val: int):
-        self.val = val
-        self.left = None
-        self.right = None
-
-    def __str__(self):
-        return str(self.val)
+from tree_node import TreeNode
 
 
+class TreeNodeUtil:
 
-def build_tree(arr: list, index: int)-> TreeNode:
-   if index < len(arr):
-       node = TreeNode(arr[index])
-       left = (index<<1) + 1
-       node.left = build_tree(arr, left)
-       right = (index<<1) + 2
-       node.right = build_tree(arr,right)
-       return node
-   return None
-
-def print_tree(root: TreeNode, msg: str=None):
-    res = []
-    if root:
-        dq = deque()
-        dq.append(root)
-        while len(dq) > 0:
-            node = dq.popleft()
-            res.append(node.val)
-            if node.left:
-                dq.append(node.left)
-            if node.right:
-                dq.append(node.right)
-    msg = msg if msg else ''
-    print(msg, res)
-
-if __name__ =="__main__":
-    arr = [2,4,6,8,1,5,9]
-    root = build_tree(arr, 0)
-    print_tree(root)
-
-
-
-
-
-
+    ## 1->2->3->4->5->6
+    @staticmethod
+    def build_tree(arr: list, index: int = 0) -> TreeNode:
+        if index < len(arr):
+            root = TreeNode(arr[index])
+            left_index = (index << 1) + 1
+            right_index = (index << 1) + 2
+            root.left = TreeNodeUtil.build_tree(arr, left_index)
+            root.right = TreeNodeUtil.build_tree(arr, right_index)
+            return root
+        return None
+    @staticmethod
+    def print_tree(root: TreeNode, msg: str = ''):
+        res = []
+        if root:
+            dq: deque[TreeNode] = deque()
+            dq.appendleft(root)
+            while dq:
+                node = dq.pop()
+                res.append(node.val)
+                if node.left:
+                    dq.appendleft(node.left)
+                if node.right:
+                    dq.appendleft(node.right)
+        res_str = '->'.join(str(item) for item in res)
+        print(msg, res_str)

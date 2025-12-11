@@ -1,43 +1,65 @@
 from collections import deque
 
-from bt.treenode_util import TreeNode
 from bt.treenode_util import *
 
 
-def pre_order_traversal(root: TreeNode)-> list[int]:
-    result = []
+## Root -> Left -> Right
+def preorder_traversal(root: TreeNode) -> list[int]:
+    res = []
     if root:
-        dq = deque()
-        dq.append(root)
-        while len(dq) > 0:
-            node = dq.pop()
-            result.append(node.val)
+        stack: deque[TreeNode] = deque()
+        stack.append(root)
+        while stack:
+            node = stack.pop()
+            res.append(node.val)
             if node.right:
-                dq.append(node.right)
+                stack.append(node.right)
             if node.left:
-                dq.append(node.left)
-    return result
+                stack.append(node.left)
+    return res
 
-def post_order_traversal(root: TreeNode)-> list[int]:
-    result = deque()
+## Left -> Root -> Right
+def inorder_traversal(root: TreeNode) -> list[int]:
+    res = []
     if root:
-        dq = deque()
-        dq.append(root)
-        while dq:
-            node = dq.pop()
-            result.appendleft(node.val)
+        node = root
+        stack = deque()
+        while stack or node:
+            if node:
+                stack.append(node)
+                node = node.left
+            else:
+                node = stack.pop()
+                res.append(node.val)
+                node = node.right
+    return res
+## Left -> Right -> Root
+def post_order_traversal(root: TreeNode) -> list[int]:
+    res = deque()
+    if root:
+        stack = deque()
+        stack.append(root)
+        while stack:
+            node = stack.pop()
+            res.appendleft(node.val)
             if node.left:
-                dq.append(node.left)
+                stack.append(node.left)
             if node.right:
-                dq.append(node.right)
-    return list(result)
+                stack.append(node.right)
+    return list(res)
 
-if __name__=="__main__":
-    root = build_tree([1,2,3,4,5,6,7], 0)
-    traversed = pre_order_traversal(root)
-    print_tree(root, "Actual Binary Tree: ")
-    print("Pre-order Traversal: ",traversed)
-    assert [1, 2, 4, 5, 3, 6, 7] == traversed
-    traversed = post_order_traversal(root)
-    print("Post-order Traversal: ", traversed)
-    assert [4, 5, 2, 6, 7, 3, 1] == traversed
+
+
+
+if __name__ == "__main__":
+    root = TreeNodeUtil.build_tree([1, 2, 3, 4, 5, 6, 7])
+    TreeNodeUtil.print_tree(root, "Original Tree(Level order): ")
+    pre_order = preorder_traversal(root)
+    print("Pre-Order traversal: ", pre_order)
+    assert [1, 2, 4, 5, 3, 6, 7] == pre_order
+    in_order = inorder_traversal(root)
+    print("In-Order traversal: ", in_order)
+    assert [4, 2, 5, 1, 6, 3, 7] == in_order
+    post_order = post_order_traversal(root)
+    print("Post-Order traversal: ", post_order)
+    assert [4, 5, 2, 6, 7, 3, 1] == post_order
