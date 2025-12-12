@@ -64,7 +64,22 @@ class TwoSumII:
                 start = mid + 1
         return -1
 
+def two_sum(nums: list, target: int)-> list:
+    map = {}
+    for i,val in enumerate(nums):
+        diff = target - val
+        if diff not in map.keys():
+            map[val] = i
+        else:
+            ind = map.get(diff)
+            return [ind, i]
+    return []
+
+
+
 if __name__ == "__main__":
+    res = two_sum([2, 7,8,14], 9)
+    print(res)
     res = TwoSum.two_sum([2, 7, 8, 14], 9)
     print(res)
     res = TwoSum.two_sum_indices([3, 2, 4, 0, 1, 5, 6], 6)
