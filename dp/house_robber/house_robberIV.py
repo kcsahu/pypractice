@@ -23,33 +23,29 @@ import sys
 
 
 def min_capability(nums: list, k: int):
-    max_rob, min_rob = -sys.maxsize, sys.maxsize
-    for ind, val in enumerate(nums):
-        max_rob = max(max_rob, val)
-        min_rob = min(min_rob, val)
+    def can_rob(capacity: int)-> bool:
+        i, counter = 0, 0
+        while i < len(nums):
+            if nums[i] <= capacity:
+                i += 2
+                counter += 1
+            else:
+                i += 1
+            if counter == k:
+                return True
+        return counter > k
+
+    min_rob, max_rob = min(nums), max(nums)
     res = max_rob
     while min_rob <= max_rob:
-        mid = min_rob + ((max_rob - min_rob) >> 1)
-        if __can_rob(nums, mid, k):
+        mid = min_rob +((max_rob - min_rob)>>1)
+        if can_rob(mid):
+        # if __can_rob(nums, mid, k):
             res = mid
-            max_rob = mid - 1
+            max_rob = mid -1
         else:
             min_rob = mid + 1
     return res
-
-
-def __can_rob(nums: list, max_rob: int, k: int):
-    size, i = len(nums), 0
-    while i < size:
-        if nums[i] <= max_rob:
-            i += 2
-            k -= 1
-        else:
-            i += 1
-        if k == 0:
-            return True
-    return False
-
 
 if __name__ == "__main__":
     res = min_capability([2, 7, 9, 3, 1], 2)
@@ -59,3 +55,7 @@ if __name__ == "__main__":
     res = min_capability([2, 3, 5, 9], 2)
     print(res)
     assert res == 5
+
+    res = min_capability([9,25,16,6,18], 1)
+    print(res)
+    assert res == 6
