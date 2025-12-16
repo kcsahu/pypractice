@@ -1,5 +1,7 @@
 import sys
 
+# Find the maximum profit you can achieve. You may complete as many transactions as you like
+# with a given fee
 
 def max_profit(prices: list, fee: int)-> int:
     buy, max_profit = -sys.maxsize, 0
