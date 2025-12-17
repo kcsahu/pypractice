@@ -40,5 +40,6 @@ def find_first_last_occurrence(nums: list, target: int) -> []:
 if __name__ == "__main__":
     res = binary_search([3, 5, 7, 9, 21, 39], 21)
     print(res)
+    assert res == 4
     res = find_first_last_occurrence([3, 3, 5, 7, 7, 7, 7, 9, 9, 21, 21, 39], 7)
     print(f'First and Last occurrence: {res}')
