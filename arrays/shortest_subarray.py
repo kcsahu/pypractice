@@ -1,6 +1,5 @@
 import sys
 from collections import deque
-from sys import prefix
 
 
 ##Given an integer array nums and an integer k, return the length of the shortest non-empty subarray
