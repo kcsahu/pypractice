@@ -1,39 +1,26 @@
-class Permutation:
+class PermutationNumber:
     def permute(self, nums: list[int]) -> list[list[int]]:
         result = []
-        self.permutation(nums, 0, result)
+
+        def permutation(pos: int = 0):
+            if pos == len(nums) - 1:
+                result.append(list(nums))
+                return
+            for i in range(pos, len(nums)):
+                self.__swap(nums, i, pos)
+                permutation(pos + 1)
+                self.__swap(nums, i, pos)
+
+        permutation()
         return result
 
-    def permutation(self, nums, pos, result):
-        if pos == len(nums) - 1:
-            result.append(list(nums))
-            return
-        for index in range(pos, len(nums)):
-            self.swap(nums, pos, index)
-            self.permutation(nums, pos + 1, result)
-            self.swap(nums, pos, index)
-
-    def swap(self, nums, left, right):
+    def __swap(self, value: list, left: int, right: int):
         if left != right:
-            nums[left], nums[right] = nums[right], nums[left]
+            value[left], value[right] = value[right], value[left]
 
-    def permuteUnique(self, nums: list[int]) -> list[list[int]]:
-        result = set()
-        self.permutationUnique(nums, 0, result)
-        return [list(item) for item in result]
-
-    def permutationUnique(self, nums, pos, result):
-        if pos == len(nums)-1:
-            result.add(tuple(nums))
-            return
-        for index in range(pos, len(nums)):
-            self.swap(nums, pos, index)
-            self.permutationUnique(nums, pos + 1, result)
-            self.swap(nums, pos, index)
 
 if __name__ == "__main__":
-    obj = Permutation()
+    obj = PermutationNumber()
     res = obj.permute([1, 2, 3])
     print(res)
-    res = obj.permuteUnique([2,2,1,1])
-    print(res)
+    assert res == [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 2, 1], [3, 1, 2]]
