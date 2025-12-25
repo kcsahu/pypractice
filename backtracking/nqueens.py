@@ -1,57 +1,37 @@
+def solveNQueens(n: int)-> list[list[int]]:
+    queens = [-1] * n
+    result = []
 
-def solveNQueens(n : int)-> list:
-    queens = [-1 for _ in range(n)]
-    return solve(0, n, queens)
+    def backtrack(row: int = 0):
+        if row == n:
+            result.append(__generate_board(n, queens))
+            return
+        for col in range(n):
+            if __is_valid(row, col, queens):
+                queens[row] = col
+                backtrack(row + 1)
+                queens[row] = - 1
 
-def is_valid(row, col, queens)-> bool:
-    for prevRow in range(0, row):
-        prevCol = queens[prevRow]
-        if prevCol == col or (abs(row - prevRow) == abs(col - prevCol)):
-            return False
-    return True
+    backtrack()
+    return result
 
-def generate_board(n: int, queens: list)-> list:
-    board = list()
-    for row in range(0, n):
-        cols = ["." for _ in range(0, n)]
-        cols[queens[row]] = "Q"
+def __is_valid(row, col, queens)-> bool:
+     for prev_row in range(row):
+         prev_col = queens[prev_row]
+         if (col == prev_col) or (abs(col - prev_col) == abs(row - prev_row)):
+             return False
+     return True
+
+def __generate_board(n, queens)-> list:
+    board = []
+    for row in range(n):
+        cols = ['.'] * n
+        cols[queens[row]] = 'Q'
         board.append(''.join(cols))
     return board
-
-
-def solve(row: int, n: int, queens: list) -> list:
-    if row == n:
-        return generate_board(n, queens)
-    result = []
-    for col in range(0, n):
-        if is_valid(row, col, queens):
-            queens[row] = col
-            board = solve(row + 1, n, queens)
-            if len(board) > 0:
-                result.extend(board)
-            queens[row] =  -1
-    return result
-
-def solveNQueensII(n: int)-> int:
-    queens = [-1 for _ in range(n)]
-    result = solveII(0,n, queens)
-    return result
-
-def solveII(row: int, n: int, queens)-> int:
-    if row == n:
-        return 1
-    res = 0
-    for col in range(n):
-        if is_valid(row, col, queens):
-            queens[row] = col
-            res += solveII(row + 1, n, queens)
-            queens[row] = -1
-    return res
 
 
 if __name__ == "__main__":
    res = solveNQueens(4)
    print(res)
-
-   res = solveNQueensII(4)
-   print(res)
+   assert res == [[".Q..","...Q","Q...","..Q."],["..Q.","Q...","...Q",".Q.."]]
