@@ -22,11 +22,33 @@ def wordBreak(s: str, wordDict: List[str]) -> bool:
                 break
     return dp[len(s)]
 
+def word_break(s: str, wordDict: list[str]) -> bool:
+    word_dict = set(wordDict)
+    size = len(s)
+    dp = [False] * (size + 1)
+    dp[0] = True
+
+    def is_present(index):
+        for j in range(0, index):
+            if dp[j] and s[j:index] in word_dict:
+                dp[index] = True
+                break
+
+    for i in range(1, size + 1):
+        is_present(i)
+    return dp[size]
+
+
+
+
 
 if __name__ == "__main__":
-    result = wordBreak("leetcode", ['leet', 'code'])
+    result = word_break("leetcode", ['leet', 'code'])
     print(result)
-    result = wordBreak("catsanddog", ["cats","dog","sand","and","cat"])
+    assert result
+    result = word_break("catsanddog", ["cats","dog","sand","and","cat"])
     print(result)
-    result = wordBreak("catsandog", ["cats","dog","sand","and","cat"])
+    assert result
+    result = word_break("catsandog", ["cats","dog","sand","and","cat"])
     print(result)
+    assert not result
