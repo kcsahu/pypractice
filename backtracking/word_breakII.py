@@ -31,7 +31,7 @@ def wordBreak(s: str, wordDict: List[str]) -> List[str]:
 if __name__=="__main__":
     result = wordBreak('pineapplepenapple',["apple","pen","applepen","pine","pineapple"])
     print(result)
-    assert result == ["pine apple pen apple","pineapple pen apple","pine applepen apple"]
+    assert result == ["pine apple pen apple","pine applepen apple", "pineapple pen apple"]
 
 
 
