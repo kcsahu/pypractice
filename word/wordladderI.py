@@ -19,17 +19,18 @@ def ladder_length(beginWord: str, endWord: str, wordList: List[str]) -> int:
     dq = deque()
     dq.append(beginWord)
     map = dict()
-    map[beginWord] = 1;
+    map[beginWord] = 1
+    visited = [False] * len(wordList)
     while len(dq) > 0:
         word = dq.pop()
         length = map.get(word)
         if word == endWord:
             return length
-        for nextWord in wordList[:]:
-            if is_adjacent(nextWord, word):
+        for ind, nextWord in enumerate(wordList):
+            if not visited[ind] and is_adjacent(nextWord, word):
                 dq.appendleft(nextWord)
                 map[nextWord] = length + 1
-                wordList.remove(nextWord)
+                visited[ind] = True
     return 0
 
 
@@ -39,6 +40,8 @@ def is_adjacent(word1: str, word2: str):
     for i in range(size):
         if word1[i] == word2[i]:
             counter += 1
+        if counter >= size - 1:
+            return True
     return counter >= size - 1
 
 
