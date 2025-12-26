@@ -20,17 +20,16 @@ def ladder_length(beginWord: str, endWord: str, wordList: List[str]) -> int:
     dq.append(beginWord)
     map = dict()
     map[beginWord] = 1
-    visited = [False] * len(wordList)
     while len(dq) > 0:
         word = dq.pop()
         length = map.get(word)
         if word == endWord:
             return length
-        for ind, nextWord in enumerate(wordList):
-            if not visited[ind] and is_adjacent(nextWord, word):
+        for ind, nextWord in enumerate(wordList[:]):
+            if is_adjacent(nextWord, word):
                 dq.appendleft(nextWord)
                 map[nextWord] = length + 1
-                visited[ind] = True
+                wordList.remove(nextWord)
     return 0
 
 
@@ -92,3 +91,4 @@ if __name__ == "__main__":
                 "pox", "vow", "got", "meg", "zoe", "amp", "ale", "bud", "gee", "pin", "dun", "pat", "ten", "mob"]
     length = ladder_length('cet', 'ism', wordList)
     print(length)
+    assert length == 11
