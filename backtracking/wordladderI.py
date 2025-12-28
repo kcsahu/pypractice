@@ -32,7 +32,6 @@ def ladder_length(beginWord: str, endWord: str, wordList: List[str]) -> int:
                 wordList.remove(nextWord)
     return 0
 
-
 def is_adjacent(word1: str, word2: str):
     size = len(word1)
     counter = 0
@@ -43,8 +42,33 @@ def is_adjacent(word1: str, word2: str):
             return True
     return counter >= size - 1
 
+def ladder_length1(beginWord: str, endWord: str, wordList: list[str]) -> int:
+    wordSet = set(wordList)
+    if endWord not in wordSet:
+        return 0
+    dq = deque([beginWord])
+    level = {beginWord: 1}
+    size = len(beginWord)
+    while dq:
+        nextWord = dq.pop()
+        cur_level = level.get(nextWord)
+        if nextWord == endWord:
+            return cur_level
+        for i in range(size):
+            for j in 'abcdefghijklmnopqrstuvwxyz':
+                new_word = nextWord[:i] + j + nextWord[i+1:]
+                if new_word in wordSet and new_word not in level:
+                    level[new_word] = cur_level + 1
+                    dq.appendleft(new_word)
+    return 0
+
+
 
 if __name__ == "__main__":
+    length = ladder_length1('hit', 'cog', ["hot", "dot", "dog", "lot", "log", "cog"])
+    print(length)
+    assert length == 5
+
     length = ladder_length('hit', 'cog', ["hot", "dot", "dog", "lot", "log", "cog"])
     print(length)
     assert length == 5
@@ -89,6 +113,10 @@ if __name__ == "__main__":
                 "nor", "ace", "adz", "fun", "ned", "coo", "win", "tao", "coy", "van", "man", "pit", "guy", "foe", "hid",
                 "mai", "sup", "jay", "hob", "mow", "jot", "are", "pol", "arc", "lax", "aft", "alb", "len", "air", "pug",
                 "pox", "vow", "got", "meg", "zoe", "amp", "ale", "bud", "gee", "pin", "dun", "pat", "ten", "mob"]
-    length = ladder_length('cet', 'ism', wordList)
+    length = ladder_length('cet', 'ism', wordList[:])
+    print(length)
+    assert length == 11
+
+    length = ladder_length1('cet', 'ism', wordList[:])
     print(length)
     assert length == 11
