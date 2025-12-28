@@ -46,6 +46,7 @@ def ladder_length1(beginWord: str, endWord: str, wordList: list[str]) -> int:
     wordSet = set(wordList)
     if endWord not in wordSet:
         return 0
+    alphabets = 'abcdefghijklmnopqrstuvwxyz'
     dq = deque([beginWord])
     level = {beginWord: 1}
     size = len(beginWord)
@@ -55,7 +56,7 @@ def ladder_length1(beginWord: str, endWord: str, wordList: list[str]) -> int:
         if nextWord == endWord:
             return cur_level
         for i in range(size):
-            for j in 'abcdefghijklmnopqrstuvwxyz':
+            for j in alphabets:
                 new_word = nextWord[:i] + j + nextWord[i+1:]
                 if new_word in wordSet and new_word not in level:
                     level[new_word] = cur_level + 1
