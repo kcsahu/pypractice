@@ -11,7 +11,7 @@
 # * Input: beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log","cog"]
 # * Output: 5
 # * Explanation: One shortest transformation sequence is "hit" -> "hot" -> "dot" -> "dog" -> cog", which is 5 words long.
-from collections import deque
+from collections import deque, defaultdict
 from typing import List
 
 
@@ -63,9 +63,44 @@ def ladder_length1(beginWord: str, endWord: str, wordList: list[str]) -> int:
                     dq.appendleft(new_word)
     return 0
 
+### Most performant ####
+def ladder_length2(beginWord: str, endWord: str, wordList: list[str]) -> int:
+    word_set = set(wordList)
+    if endWord not in word_set:
+        return 0
+    wsize = len(beginWord)
+    wildcard_map = defaultdict(list)
+    for w in word_set:
+        for i in range(wsize):
+            wild_card = w[:i] +'*'+w[i+1:]
+            wildcard_map[wild_card].append(w)
+    queue = deque([beginWord])
+    visited = {beginWord}
+    length = 0
+    while queue:
+        qsize = len(queue)
+        length += 1
+        for i in range(qsize):
+            word = queue.pop()
+            if word == endWord:
+                return length
+            for j in range(wsize):
+                wild_card = word[:j] + '*' + word[j+1:]
+                for next_word in wildcard_map[wild_card]:
+                    if next_word == word:
+                        continue
+                    if next_word not in visited:
+                        visited.add(next_word)
+                        queue.appendleft(next_word)
+    return 0
+
 
 
 if __name__ == "__main__":
+    length = ladder_length2('hit', 'cog', ["hot", "dot", "dog", "lot", "log", "cog"])
+    print(length)
+    assert length == 5
+
     length = ladder_length1('hit', 'cog', ["hot", "dot", "dog", "lot", "log", "cog"])
     print(length)
     assert length == 5
@@ -119,5 +154,9 @@ if __name__ == "__main__":
     assert length == 11
 
     length = ladder_length1('cet', 'ism', wordList[:])
+    print(length)
+    assert length == 11
+
+    length = ladder_length2('cet', 'ism', wordList[:])
     print(length)
     assert length == 11
