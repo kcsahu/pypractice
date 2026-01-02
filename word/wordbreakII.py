@@ -10,24 +10,26 @@ from typing import List
 # Explanation: Note that you are allowed to reuse a dictionary word.
 
 def wordBreak( s: str, wordDict: List[str]) -> List[str]:
-    dict = set(wordDict)
-    return word_break(s, dict)
+    word_set = set(wordDict)
 
-def word_break(s: str, dict: set):
-    size = len(s)
-    words = list()
-    for i in range(1, size + 1):
-        substr = s[:i]
-        if substr in dict:
-            prefix = substr
-            suffix = s[i:size]
-            result = word_break(suffix, dict)
-            for val in result:
-                words.append(prefix + " " + val)
-    if s in dict:
-        words.append(s)
-    return words
+    def backtrack(s: str)-> list:
+        size = len(s)
+        words = []
+        for i in range(1, size):
+            sub_string = s[:i]
+            if sub_string in word_set:
+                prefix = sub_string
+                suffix = s[i:]
+                result = backtrack(suffix)
+                for word in result:
+                    words.append(prefix + ' ' + word)
+        if s in word_set:
+            words.append(s)
+        return words
+
+    return backtrack(s)
 
 if __name__=="__main__":
     result = wordBreak('pineapplepenapple',["apple","pen","applepen","pine","pineapple"])
     print(result)
+    assert result.sort() == ['pine apple pen apple', 'pine applepen apple', 'pineapple pen apple'].sort()
