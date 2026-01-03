@@ -10,7 +10,7 @@ def findMedianSortedArrays(nums1: list[int], nums2: list[int])-> float:
     mid = (total_len + 1) >> 1
     low, high = 0, nums1_size
     while low <= high:
-        i = (low + high) >> 1
+        i = low + ((high - low) >> 1)
         j = mid - i
         nums1_left = nums1[i-1] if i > 0 else float('-inf')
         nums1_right = nums1[i] if i < nums1_size else float('inf')
