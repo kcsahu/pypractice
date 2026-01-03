@@ -1,3 +1,4 @@
+import concurrent.futures
 import threading
 ## Best clean solution
 
@@ -30,12 +31,18 @@ def printBar():
 
 if __name__ == "__main__":
     fb = FooBar(5)
-    t1 = threading.Thread(target=fb.foo, args=(printFoo,))
-    t2 = threading.Thread(target=fb.bar, args=(printBar,))
-    t1.start()
-    t2.start()
-    t1.join();
-    t2.join()
+    # t1 = threading.Thread(target=fb.foo, args=(printFoo,))
+    # t2 = threading.Thread(target=fb.bar, args=(printBar,))
+    # t1.start()
+    # t2.start()
+    # t1.join()
+    # t2.join()
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executors:
+        f1 = executors.submit(fb.foo, printFoo)
+        f2 = executors.submit(fb.bar, printBar)
+
+        f1.result()
+        f2.result()
     # fb = FooBar(5)
     # p1 = Process(target=fb.foo)
     # p2 = Process(target=fb.bar)
