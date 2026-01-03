@@ -19,7 +19,7 @@ def findMedianSortedArrays(nums1: list[int], nums2: list[int])-> float:
         if nums1_left <= nums2_right and nums2_left <= nums1_right:
             if (total_len % 2):
                 return max(nums1_left, nums2_left)
-            return (max(nums1_left, nums1_right) + min(nums2_left, nums2_right))/2
+            return (max(nums1_left, nums2_left) + min(nums1_right, nums2_right))/2
         elif nums1_left > nums2_right:
             high = i - 1
         else:
@@ -28,3 +28,7 @@ def findMedianSortedArrays(nums1: list[int], nums2: list[int])-> float:
 if __name__ == "__main__":
     res = findMedianSortedArrays([1, 3], [2, 6 ,7])
     print(res)
+    assert res == 3
+    res = findMedianSortedArrays([1, 2], [3, 4])
+    print(res)
+    assert res == 2.5
