@@ -28,3 +28,7 @@ if __name__ == "__main__":
     res = find_min([2,2,2,0,1])
     print(res)
     assert  res == 0
+
+    res = find_min([1,3,3])
+    print(res)
+    assert res == 1
