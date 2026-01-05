@@ -18,6 +18,8 @@ def product_sub_array(nums)-> int:
     return max_val
 
 if __name__ == "__main__":
-    print(max_sub_array([-2,1,-3,4,-1,2,1,-5,4]))
+    res = max_sub_array([-2,1,-3,4,-1,2,1,-5,4])
+    print(res)
+    assert res == 6
     print(product_sub_array([2, 3, -2, 4, -3]))
     print(product_sub_array([2, 3, -2, -4, -3]))
