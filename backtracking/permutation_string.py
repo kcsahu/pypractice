@@ -1,6 +1,6 @@
 class PermutationString:
-    def permutation(self, nums: str)-> list:
-        nums = list(nums)
+    def permutation(self, input: str)-> list:
+        nums = list(input)
         result = []
         def permute(pos: int = 0):
             if pos == len(nums) - 1:
