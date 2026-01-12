@@ -12,7 +12,7 @@
 # Input: arr = [100,-23,-23,404,100,23,23,23,3,404]
 # Output: 3
 # Explanation: You need three jumps from index 0 --> 4 --> 3 --> 9. Note that index 9 is the last index of the array.
-from collections import deque
+from collections import deque, defaultdict
 
 
 def min_jumps(arr: list[int])-> int:
@@ -22,12 +22,9 @@ def min_jumps(arr: list[int])-> int:
     visited = [False] * size
     counter_map = {}
     counter_map[0] = 0
-    graph = {}
+    graph = defaultdict(deque)
     for ind, val in enumerate(arr):
-        val_dq = graph.get(val, deque())
-        val_dq.appendleft(ind)
-        if val not in graph.keys():
-            graph[val] = val_dq
+        graph[val].appendleft(ind)
 
     while dq:
         index = dq.pop()
