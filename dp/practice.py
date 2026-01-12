@@ -1,17 +1,27 @@
-import sys
 import numpy as np
-def max_profit(prices: list[int], k: int)-> int:
-    dp = np.zeros((k+1, 2), dtype='int64')
-    dp[:, 0] = -sys.maxsize
-    for i, price in enumerate(prices):
-        for j in range(k, 0, -1):
-            dp[j, 0] = max(dp[j, 0], dp[j-1, 1] - price)
-            dp[j, 1] = max(dp[j, 1], dp[j, 0] + price)
-    return dp[k, 1]
+import sys
+
+def rob(nums: list[int]) -> int:
+    max_rob = -sys.maxsize
+    size = len(nums)
+    dp = np.zeros((size, 2), dtype="int")
+    for i in range(size):
+        if i > 0:
+            dp[i, 0] = max(
+                nums[i] + dp[i - 2, 0] if i >= 2 else nums[i],
+                nums[i] + dp[i - 3, 0] if i >= 3 else nums[i],
+            )
+            max_rob = max(max_rob, dp[i, 0])
+        if i < size:
+            dp[i, 1] = max(
+                nums[i] + dp[i - 2, 0] if i >= 2 else nums[i],
+                nums[i] + dp[i - 3, 1] if i >= 3 else nums[i],
+            )
+            max_rob = max(max_rob, dp[i, 1])
+    return max_rob
 
 
-
-if __name__=="__main__":
-    res = max_profit([3, 3, 5, 0, 0, 3, 1, 4], 2)
+if __name__ == "__main__":
+    res = rob([10, 9, 3, 1, 7])
     print(res)
-    assert res == 6
+    assert res == 16
