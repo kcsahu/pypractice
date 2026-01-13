@@ -15,7 +15,7 @@ def product_sub_array(nums)-> int:
         min_val = min(nums[i], min(nums[i] * min_val, nums[i] * max_val))
         max_val = cur_max
         result = max(result, max_val)
-    return max_val
+    return result
 
 if __name__ == "__main__":
     res = max_sub_array([-2,1,-3,4,-1,2,1,-5,4])
