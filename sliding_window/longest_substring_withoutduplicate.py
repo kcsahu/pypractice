@@ -14,7 +14,7 @@ def length_of_longest_substring(s: str):
                 left += 1
         visited.add(s[right])
         right += 1
-    return max(max_len, len(visited))
+    return max(max_len, right - left)
 
 
 if __name__ == "__main__":
