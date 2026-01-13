@@ -1,5 +1,6 @@
 import sys
 from collections import deque
+import numpy as np
 
 
 ##Given an integer array nums and an integer k, return the length of the shortest non-empty subarray
@@ -7,9 +8,11 @@ from collections import deque
 # A subarray is a contiguous part of an array.
 def shortest_subarray(nums: list, k: int) -> int:
     size = len(nums)
-    prefix_sum = [0 for i in range(0, size + 1)]
-    for i in range(0, size):
-        prefix_sum[i + 1] = prefix_sum[i] + nums[i]
+    prefix_sum = np.zeros(size+1, dtype=np.int32)
+    prefix_sum[1:] = np.cumsum(nums)
+    # prefix_sum = [0 for i in range(0, size + 1)]
+    # for i in range(0, size):
+    #     prefix_sum[i + 1] = prefix_sum[i] + nums[i]
     min_len = sys.maxsize
     dq = deque()
     for i in range(0, len(prefix_sum)):
