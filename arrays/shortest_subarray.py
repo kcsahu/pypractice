@@ -26,6 +26,7 @@ def shortest_subarray(nums: list, k: int) -> int:
 
 
 ## nums = [2, 3, 1, 2, 4, 3], target=7, res (size of the subarray) =  2 (4 + 3)
+## Sliding window + Variable window
 def min_subarray_sum(nums: list, target: int) -> int:
     min_len = sys.maxsize
     sum = 0
@@ -38,19 +39,33 @@ def min_subarray_sum(nums: list, target: int) -> int:
             j += 1
     return min_len if min_len != sys.maxsize else 0
 
+## arr = [2, 3, 1, 2, 4, 3], k = 2, Maximum sum of a subarray with size 2 = 7
+## Sliding window + Fixed window
+def max_sum_subarray(arr: list[int], k: int)-> int:
+    max_sum, window_sum = 0, 0
+    for i in range(len(arr)):
+        window_sum += nums[i]
+        if i >= k:
+            window_sum -= nums[i - k]
+        max_sum = max(max_sum, window_sum)
+    return max_sum
 
 if __name__ == "__main__":
     ## Min size of Subarray
     nums = [2, 3, 1, 2, 4, 3]
     res = min_subarray_sum(nums, 7)
-    print(res)
+    print('Minimum Subarray Sum: ',res)
     assert res == 2
 
     res = shortest_subarray(nums, 7)
-    print(res)
+    print('Shortest Sub-array: ',res)
     assert res == 2
 
     nums = [17, 85, 93, -45, -21]
     res = shortest_subarray(nums, 150)
-    print(res)
+    print('Shortest Sub-array: ',res)
     assert res == 2
+
+    nums = [2, 3, 1, 2, 4, 3]
+    res = max_sum_subarray(nums, 2)
+    print('Max Sum Subarray: ', res)
