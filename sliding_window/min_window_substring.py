@@ -7,51 +7,11 @@
 # Input: s = "ADOBECODEBANC", t = "ABC"
 # Output: "BANC"
 # Explanation: The minimum window substring "BANC" includes 'A', 'B', and 'C' from string t
-
 from collections import Counter
 
 
-def min_window1(s: str, t: str) -> str:
-    if not t or not s:
-        return ""
-
-    need = Counter(t)  # required chars
-    window = Counter()  # chars in current window
-    required = len(need)  # number of unique chars we must satisfy
-    formed = 0  # number of characters satisfied so far
-
-    left = 0
-    result = ""
-
-    for right in range(len(s)):
-        ch = s[right]
-        window[ch] += 1
-
-        # A requirement met?
-        if ch in need and window[ch] == need[ch]:
-            formed += 1
-
-        # Attempt shrinking when valid
-        while formed == required:
-            # update result if window smaller
-            if not result or (right - left + 1) < len(result):
-                result = s[left : right + 1]
-
-            # shrink left side
-            shrinking_char = s[left]
-            window[shrinking_char] -= 1
-
-            # requirement broken?
-            if shrinking_char in need and window[shrinking_char] < need[shrinking_char]:
-                formed -= 1
-
-            left += 1
-
-    return result
-
-
 def min_window(s: str, t: str) -> str:
-    char_freq = Counter(list(t))
+    char_freq = Counter(t)
     min_len_window = len(char_freq)
     cur_window = Counter()
     counter = 0
