@@ -18,18 +18,23 @@
 from collections import defaultdict, Counter
 
 
+# TODO use sliding window
 def find_substring(s: str, words: list):
     size, word_size = len(words), len(words[0])
     total_size = word_size * size
     word_map = defaultdict(int)
     for word in words:
         word_map[word] += 1
-    def is_substring(s: str)-> bool:
+
+    def is_substring(s: str) -> bool:
         word_dict = defaultdict(int)
         word_count = 0
         for i in range(0, len(s), word_size):
-            sub_string = s[i: i + word_size]
-            if sub_string in word_map.keys() and word_dict[sub_string] < word_map[sub_string]:
+            sub_string = s[i : i + word_size]
+            if (
+                sub_string in word_map.keys()
+                and word_dict[sub_string] < word_map[sub_string]
+            ):
                 word_dict[sub_string] += 1
                 word_count += 1
         return word_count == size
@@ -38,11 +43,12 @@ def find_substring(s: str, words: list):
     prev_string = None
     result = []
     for i in range(len(s)):
-        sub_string = s[i:i+total_size]
+        sub_string = s[i : i + total_size]
         if prev_string == sub_string or is_substring(sub_string):
             result.append(i)
             prev_string = sub_string
     return result
+
 
 def find_substring1(s: str, words: list[str]):
     if not s or not words:
@@ -50,28 +56,43 @@ def find_substring1(s: str, words: list[str]):
     wsize = len(words[0])
     size = len(words)
     word_feq = Counter(words)
-    def is_substr(word: str)-> bool:
-        counter = Counter()
-        word_count = 0
+    unique_words = len(word_feq)
+
+    def is_substr(word: str) -> bool:
+        cur_window = Counter()
+        word_counter = 0
         for i in range(0, len(word), wsize):
-            sub_str = word[i: i + wsize]
-            if sub_str in word_feq and counter[sub_str] < word_feq[sub_str]:
-                counter[sub_str] += 1
-                word_count += 1
-        return word_count == size
-    
+            sub_str = word[i : i + wsize]
+            cur_window[sub_str] += 1
+            if sub_str not in word_feq:
+                return False
+            if cur_window[sub_str] == word_feq[sub_str]:
+                word_counter += 1
+        return word_counter == unique_words
+
     result = []
     total_size = size * wsize
-    prev_str = set()
+    visited = set()
     for i in range(len(s)):
-        sub_str = s[i : i+total_size]
-        if sub_str in prev_str or is_substr(sub_str):
-            result.append(i)
-            if sub_str not in prev_str:
-                prev_str.add(sub_str)
+        if s[i : i + wsize] in word_feq:
+            sub_str = s[i : i + total_size]
+            if sub_str in visited or is_substr(sub_str):
+                result.append(i)
+                visited.add(sub_str)
     return result
 
+
 if __name__ == "__main__":
+    s = "barfoothefoobarman"
+    result = find_substring1(s, ["foo", "bar"])
+    print(result)
+    assert result == [0, 9]
+
+    s = "wordgoodgoodgoodbestword"
+    result = find_substring1(s, ["word","good","best","good"])
+    print(result)
+    assert result == [8]
+
     s = 'barfoothefoobarman'
     result = find_substring(s, ["foo","bar"])
     print(result)
@@ -79,15 +100,5 @@ if __name__ == "__main__":
 
     s = "wordgoodgoodgoodbestword"
     result = find_substring(s, ["word","good","best","word"])
-    print(result)
-    assert result == []
-
-    s = 'barfoothefoobarman'
-    result = find_substring1(s, ["foo","bar"])
-    print(result)
-    assert result ==[0,9]
-
-    s = "wordgoodgoodgoodbestword"
-    result = find_substring1(s, ["word","good","best","word"])
     print(result)
     assert result == []
