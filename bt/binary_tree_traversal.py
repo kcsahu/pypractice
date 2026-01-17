@@ -1,5 +1,5 @@
-from bt.treenode_util import TreeNodeUtil
-from bt.tree_node import TreeNode
+from treenode_util import TreeNodeUtil
+from tree_node import TreeNode
 from collections import deque
 
 
@@ -51,6 +51,21 @@ def post_order_traversal(root: TreeNode) -> list[int]:
                 stack.append(node.right)
     return list(res)
 
+def level_order_traversal(root: TreeNode) -> list[int]:
+    res = []
+    if root:
+        queue = deque([root])
+        while queue:
+            node = queue.pop()
+            res.append(node.val)
+            if node.left:
+                queue.appendleft(node.left)
+            if node.right:
+                queue.appendleft(node.right)
+    return res
+
+
+
 
 if __name__ == "__main__":
     root = TreeNodeUtil.build_tree([1, 2, 3, 4, 5, 6, 7])
@@ -64,3 +79,6 @@ if __name__ == "__main__":
     post_order = post_order_traversal(root)
     print("Post-Order traversal: ", post_order)
     assert [4, 5, 2, 6, 7, 3, 1] == post_order
+    level_order = level_order_traversal(root)
+    print("Level Order traversal: ", level_order)
+    assert [1, 2, 3, 4, 5, 6, 7] == level_order

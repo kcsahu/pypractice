@@ -1,6 +1,6 @@
 from collections import deque
 
-from bt.tree_node import TreeNode
+from tree_node import TreeNode
 
 
 class TreeNodeUtil:
@@ -25,7 +25,7 @@ class TreeNodeUtil:
             dq.appendleft(root)
             while dq:
                 node = dq.pop()
-                res.append(node.val)
+                res.append(node.val if node else None)
                 if node.left:
                     dq.appendleft(node.left)
                 if node.right:
