@@ -60,7 +60,7 @@ def find_substring1(s: str, words: list[str]):
     total_size = size * wsize
     visited = set()
     for i in range(len(s)):
-        if s[i: i+total_size] in visited:
+        if s[i : i + total_size] in visited:
             result.append(i)
             continue
         sub_str = s[i : i + wsize]
@@ -68,8 +68,8 @@ def find_substring1(s: str, words: list[str]):
             cur_window = Counter()
             word_counter = 1
             cur_window[sub_str] += 1
-            for j in range(i+wsize, i + total_size, wsize):
-                sub_str = s[j: j+wsize]
+            for j in range(i + wsize, i + total_size, wsize):
+                sub_str = s[j : j + wsize]
                 if sub_str not in word_feq:
                     break
                 if cur_window[sub_str] < word_feq[sub_str]:
@@ -77,77 +77,68 @@ def find_substring1(s: str, words: list[str]):
                     word_counter += 1
             if word_counter == size:
                 result.append(i)
-                visited.add(s[i: i+total_size])
+                visited.add(s[i : i + total_size])
     return result
 
-
-def find_substring2(s: str, words: list[str]):
+#### Sliding window - Performant one
+def find_substring3(s: str, words: list[str]):
     if not s or not words:
-            return []
-
-    word_len = len(words[0])
-    word_count = Counter(words)
-    window_len = word_len * len(words)
-    n = len(s)
-
+        return []
+    wsize = len(words[0])
+    size = len(words)
+    wlen = len(s)
+    word_counter = Counter(words)
     result = []
+    for index in range(wsize):
+        left = index
+        cur_window = Counter()
+        counter = 0
 
-    # We start scanning at offsets 0,1,...word_len-1
-    for offset in range(word_len):
-        left = offset
-        seen = Counter()
-        count = 0  # number of valid words matched
-
-        for right in range(offset, n - word_len + 1, word_len):
-            word = s[right:right + word_len]
-
-            if word in word_count:
-                seen[word] += 1
-                count += 1
-
-                # Too many occurrences → shrink window
-                while seen[word] > word_count[word]:
-                    left_word = s[left:left + word_len]
-                    seen[left_word] -= 1
-                    left += word_len
-                    count -= 1
-
-                # Window matches exactly → record
-                if count == len(words):
+        for right in range(left, wlen - wsize + 1, wsize):
+            word = s[right: right+wsize]
+            if word in word_counter:
+                cur_window[word] += 1
+                counter += 1
+                
+                while cur_window[word] > word_counter[word]:
+                    left_word = s[left: left + wsize]
+                    cur_window[left_word] -= 1
+                    counter -= 1
+                    left += wsize
+                
+                if counter == size:
                     result.append(left)
-
-                    # Move left to look for next
-                    left_word = s[left:left + word_len]
-                    seen[left_word] -= 1
-                    left += word_len
-                    count -= 1
+                    left_word = s[left: left + wsize]
+                    cur_window[left_word] -= 1
+                    counter -= 1
+                    left += wsize
             else:
-                # Reset window
-                seen.clear()
-                count = 0
-                left = right + word_len
-
+                cur_window.clear()
+                counter =0
+                left = right + wsize
     return result
+
+
 
 if __name__ == "__main__":
-    res = find_substring1("lingmindraboofooowingdingbarrwingmonkeypoundcake", ["fooo","barr","wing","ding","wing"])
-    print(res)
     s = "barfoothefoobarman"
-    result = find_substring1(s, ["foo", "bar"])
+    result = find_substring3(s, ["foo", "bar"])
     print(result)
     assert result == [0, 9]
 
+
+    res = find_substring3(
+        "lingmindraboofooowingdingbarrwingmonkeypoundcake",
+        ["fooo", "barr", "wing", "ding", "wing"],
+    )
+    print(res)
+
     s = "wordgoodgoodgoodbestword"
-    result = find_substring1(s, ["word","good","best","good"])
+    result = find_substring3(s, ["word", "good", "best", "good"])
     print(result)
     assert result == [8]
 
-    # s = 'barfoothefoobarman'
-    # result = find_substring(s, ["foo","bar"])
-    # print(result)
-    # assert result ==[0,9]
-
     s = "wordgoodgoodgoodbestword"
-    result = find_substring1(s, ["word","good","best","word"])
+    result = find_substring3(s, ["word", "good", "best", "word"])
     print(result)
     assert result == []
