@@ -8,7 +8,7 @@ class TreeNodeUtil:
     ## 1->2->3->4->5->6
     @staticmethod
     def build_tree(arr: list, index: int = 0) -> TreeNode:
-        if index < len(arr):
+        if index < len(arr) and arr[index] != None:
             root = TreeNode(arr[index])
             left_index = (index << 1) + 1
             right_index = (index << 1) + 2
