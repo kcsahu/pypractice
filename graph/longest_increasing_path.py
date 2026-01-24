@@ -12,27 +12,27 @@ import numpy as np
 def longestIncreasingPath(matrix):
     if not matrix or not matrix[0]:
         return 0
-    m, n = len(matrix), len(matrix[0])
-    # dp = [[0] * n for i in range(m)]
-    dp = np.zeros((n, m), dtype=np.int64)
+    rows, cols = len(matrix), len(matrix[0])
+    # dp = [[0] * cols for i in range(rows)]
+    dp = np.zeros((rows, cols), dtype=np.int64)
 
     direction = [(1, 0), (-1, 0), (0, 1), (0, -1)]
     
-    def dfs(i, j):
-        if dp[i,j] != 0:
-            return dp[i,j]
+    def dfs(row, col):
+        if dp[row][col] != 0:
+            return dp[row][col]
         longest = 1
         for (dx, dy) in direction:
-            x, y = i+dx, j+dy
-            if 0 <= x < m and 0<= y < n and matrix[x][y] > matrix[i][j]:
+            x, y = row+dx, col+dy
+            if 0 <= x < rows and 0<= y < cols and matrix[x][y] > matrix[row][col]:
                 longest = max(longest, 1 + dfs(x, y))
-        dp[i][j] = longest
+        dp[row][col] = longest
         return longest        
 
     longest = 0
-    for i in range(m):
-        for j in range(n):
-            longest = max(longest, dfs(i, j))
+    for row in range(rows):
+        for col in range(cols):
+            longest = max(longest, dfs(row, col))
     return longest
 
 if __name__ == "__main__":
