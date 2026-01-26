@@ -15,7 +15,7 @@ from treenode_util import TreeNodeUtil
 from collections import defaultdict, deque
 
 def verticalTraversal(root: TreeNode)->list[list[int]]:
-    ## BFS - Level order
+    ## BFS - Level order. Sort the values at Row level
     if root:
         graph = defaultdict(list)
         queue = deque([(root, 0)])
