@@ -9,6 +9,7 @@
 
 import numpy as np
 
+######.  DP + DFS   ###########
 
 def longestIncreasingPath(matrix):
     if not matrix or not matrix[0]:
