@@ -38,7 +38,7 @@ def longestIncreasingPath(matrix):
     return longest
 
 
-## Returns the longest increasing path sequence.
+## Returns the longest increasing path sequence
 def longestIncreasingPath2(matrix) -> list:
     if not matrix or not matrix[0]:
         return []
