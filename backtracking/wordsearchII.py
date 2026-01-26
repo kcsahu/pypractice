@@ -64,17 +64,18 @@ class Solution:
         direction = ((0, 1), (0,-1), (1,0),(-1,0))
         res = []
         def backtrack(row, col, node: TrieNode):
-            if node.is_end:
-                res.append(node.word)
-                node.is_end = False
-                return
             tmp = board[row][col]
             if tmp in node.child.keys():
+                node = node.child.get(tmp)
+                if node.word:
+                    res.append(node.word)
+                    node.word = None
+                
                 board[row][col] = '$'
                 for dx, dy in direction:
                     x, y = dx + row, dy + col
-                    if 0<=x<rows and 0<=y<cols:
-                        backtrack(x, y, node.child.get(tmp))
+                    if 0<=x<rows and 0<=y<cols and board[x][y] != '$':
+                        backtrack(x, y, node)
                 board[row][col] = tmp
             return
 
@@ -87,18 +88,29 @@ class Solution:
 
 if __name__ == "__main__":
     obj = Solution()
+
+    res = obj.findWords2([["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l","v"]],
+                          ["oath","pea","eat","rain","oathi","oathk","oathf","oate","oathii","oathfi","oathfii"])
+    print(res)
+    assert res == ['oate', 'oath', 'oathk', 'oathi', 'oathii', 'oathf', 'oathfi', 'oathfii', 'eat']
+
     res = obj.findWords2([["o", "a", "a", "n"], ["e", "t", "a", "e"], ["i", "h", "k", "r"], ["i", "f", "l", "v"]],
                          ["oath", "pea", "eat", "rain"])
     print(res)
     assert ['oath', 'eat'] == res
 
-    res = obj.findWords([["a","b"],["c","d"]], ["abcb"])
+    res = obj.findWords2([['a']], ['a'])
+    print(res)
+    assert ['a'] == res
+
+    res = obj.findWords2([["a","b"],["c","d"]], ["abcb"])
     print(res)
     assert [] == res
 
-    res = obj.findWords([["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l","v"]],
+    res = obj.findWords2([["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l","v"]],
                         # ["hklf","hf"]
                         ["oath","pea","eat","rain","hklf", "hf"]
                         )
     print(res)
-    assert res == ['oath', 'eat', 'hf', 'hklf']
+    assert res == ['oath', 'eat', 'hklf', 'hf']
+
