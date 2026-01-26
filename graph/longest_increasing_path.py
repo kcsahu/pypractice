@@ -38,7 +38,7 @@ def longestIncreasingPath(matrix):
     return longest
 
 
-## Returns the longest increasing path sequence
+## Returns the longest increasing path sequence.
 def longestIncreasingPath2(matrix) -> list:
     if not matrix or not matrix[0]:
         return []
@@ -75,7 +75,7 @@ if __name__ == "__main__":
     res = longestIncreasingPath2(matrix)
     print(res)
     assert [1,2,6,9] == res
-    
+
     res = longestIncreasingPath(matrix)
     print(res)
     assert res == 4
