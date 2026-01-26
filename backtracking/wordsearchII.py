@@ -56,10 +56,38 @@ class Solution:
                     if board[row][col] in self.root.child.keys():
                         backtrack(row, col, self.root)
         return result
+    
+    def findWords2(self, board: list[list[str]], words: list[str])-> list:
+        if not board or not words:
+            return []
+        rows, cols = len(board), len(board[0])
+        direction = ((0, 1), (0,-1), (1,0),(-1,0))
+        res = []
+        def backtrack(row, col, node: TrieNode):
+            if node.is_end:
+                res.append(node.word)
+                node.is_end = False
+                return
+            tmp = board[row][col]
+            if tmp in node.child.keys():
+                board[row][col] = '$'
+                for dx, dy in direction:
+                    x, y = dx + row, dy + col
+                    if 0<=x<rows and 0<=y<cols:
+                        backtrack(x, y, node.child.get(tmp))
+                board[row][col] = tmp
+            return
+
+        self.__build_trie(words)
+        for row in range(rows):
+            for col in range(cols):
+                if board[row][col] in self.root.child.keys():
+                    backtrack(row, col, self.root)
+        return res       
 
 if __name__ == "__main__":
     obj = Solution()
-    res = obj.findWords([["o", "a", "a", "n"], ["e", "t", "a", "e"], ["i", "h", "k", "r"], ["i", "f", "l", "v"]],
+    res = obj.findWords2([["o", "a", "a", "n"], ["e", "t", "a", "e"], ["i", "h", "k", "r"], ["i", "f", "l", "v"]],
                          ["oath", "pea", "eat", "rain"])
     print(res)
     assert ['oath', 'eat'] == res
