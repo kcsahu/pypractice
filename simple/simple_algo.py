@@ -1,4 +1,9 @@
+from collections import deque
 def fibonacci(n: int) -> int:
+    dq = deque()
+    dq.append(None)
+    dq.append(None)
+
     prev, cur = 0, 1
     if n == 0:
         return 0
