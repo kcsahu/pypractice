@@ -14,7 +14,7 @@ def findItenary(tickets: list[list[str]]) -> list[str]:
        route.append(node)
     dfs('JFK')
     return route[::-1]
-    
+
 
 if __name__ =="__main__":
    tickets = [["JFK","SFO"],["JFK","ATL"],["SFO","ATL"],["ATL","JFK"],["ATL","SFO"]]
