@@ -8,7 +8,7 @@ class TreeNodeUtil:
     ## 1->2->3->4->5->6
     @staticmethod
     def build_tree(arr: list, index: int = 0) -> TreeNode:
-        if index < len(arr) and arr[index] != None:
+        if index < len(arr):
             root = TreeNode(arr[index])
             left_index = (index << 1) + 1
             right_index = (index << 1) + 2
@@ -25,10 +25,13 @@ class TreeNodeUtil:
             dq.appendleft(root)
             while dq:
                 node = dq.pop()
-                res.append(node.val if node else None)
-                if node.left:
+                if node:
+                    res.append(node.val)
                     dq.appendleft(node.left)
-                if node.right:
                     dq.appendleft(node.right)
+                else:
+                    res.append(None)
+            while res and res[-1] is None:
+                res.pop()
         res_str = '->'.join(str(item) for item in res)
         print(msg, res_str)
