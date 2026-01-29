@@ -24,7 +24,8 @@ def verticalTraversal(root: TreeNode)->list[list[int]]:
             row_list = []
             for i in range(qsize):
                 node_t = queue.pop()
-                row_list.append(node_t)
+                if node_t[0].val is not None:
+                    row_list.append(node_t)
                 if node_t[0].left:
                     queue.appendleft((node_t[0].left, node_t[1] - 1))
                 if node_t[0].right:
