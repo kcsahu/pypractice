@@ -19,6 +19,6 @@ def minSwapsCouples1(row):
 
 
 if __name__ == "__main__":
-    row = [3, 2, 0, 1]
+    row = [3, 0, 2, 1]
     result = minSwapsCouples1(row)
     print(result)
