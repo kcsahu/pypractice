@@ -1,7 +1,18 @@
 
 def permutation(value: str)-> list:
     value = list(value)
-    return permute(value)
+    result = []
+
+    def backtrack(val, pos:int =0):
+        if pos == len(val):
+            result.append(''.join(value))
+            return
+        for i in range(pos, len(val)):
+            val[i], val[pos] = val[pos], val[i]
+            backtrack(val, pos + 1)
+            val[i], val[pos] = val[pos], val[i]
+    backtrack(value)
+    return result
 
 def permute(value: list, pos: int = 0)-> list:
     def swap(val: list, left: int, right: int):
