@@ -2,7 +2,6 @@ import numpy as np
 
 def totalNQueens(n: int)-> int:
     queens = np.full(n, -1)
-    total_queens = 0
 
     def is_valid(row, col, queens)-> bool:
         for prev_row in range(row):
@@ -13,17 +12,15 @@ def totalNQueens(n: int)-> int:
 
     def backtrack(row:int = 0):
         if row == n:
-            nonlocal total_queens
-            total_queens += 1    
-            return
+            return 1
+        total = 0
         for col in range(n):
             if is_valid(row, col, queens):
                 queens[row] = col
-                backtrack(row + 1)
+                total += backtrack(row + 1)
                 queens[row] = -1
-    
-    backtrack()
-    return total_queens
+        return total
+    return backtrack()
 
 if __name__ == "__main__":
     res = totalNQueens(4)
