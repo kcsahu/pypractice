@@ -50,36 +50,6 @@ def find_substring(s: str, words: list):
     return result
 
 
-def find_substring1(s: str, words: list[str]):
-    if not s or not words:
-        return []
-    wsize = len(words[0])
-    size = len(words)
-    word_feq = Counter(words)
-    result = []
-    total_size = size * wsize
-    visited = set()
-    for i in range(len(s)):
-        if s[i : i + total_size] in visited:
-            result.append(i)
-            continue
-        sub_str = s[i : i + wsize]
-        if sub_str in word_feq:
-            cur_window = Counter()
-            word_counter = 1
-            cur_window[sub_str] += 1
-            for j in range(i + wsize, i + total_size, wsize):
-                sub_str = s[j : j + wsize]
-                if sub_str not in word_feq:
-                    break
-                if cur_window[sub_str] < word_feq[sub_str]:
-                    cur_window[sub_str] += 1
-                    word_counter += 1
-            if word_counter == size:
-                result.append(i)
-                visited.add(s[i : i + total_size])
-    return result
-
 #### Sliding window - Performant one
 def find_substring3(s: str, words: list[str]):
     if not s or not words:
@@ -122,7 +92,7 @@ def find_substring3(s: str, words: list[str]):
 
 if __name__ == "__main__":
     s = "barfoothefoobarman"
-    result = find_substring3(s, ["foo", "bar"])
+    result = find_substring1(s, ["foo", "bar"])
     print(result)
     assert result == [0, 9]
 
