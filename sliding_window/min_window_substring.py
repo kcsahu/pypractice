@@ -11,8 +11,8 @@ from collections import Counter
 
 
 def min_window(s: str, t: str) -> str:
-    char_freq = Counter(t)
-    min_len_window = len(char_freq)
+    window = Counter(t)
+    min_len_window = len(window)
     cur_window = Counter()
     counter = 0
     min_substr = ""
@@ -21,7 +21,7 @@ def min_window(s: str, t: str) -> str:
         right_car = s[right]
         cur_window[right_car] = +1
 
-        if right_car in char_freq and cur_window[right_car] == char_freq[right_car]:
+        if right_car in window and cur_window[right_car] == window[right_car]:
             counter += 1
 
         while counter == min_len_window:
@@ -30,7 +30,7 @@ def min_window(s: str, t: str) -> str:
                 min_substr = sub_str
             left_char = s[left]
             cur_window[left_char] -= 1
-            if left_char in char_freq and cur_window[left_char] < char_freq[left_char]:
+            if left_char in window and cur_window[left_char] < window[left_char]:
                 counter -= 1
             left += 1
 
