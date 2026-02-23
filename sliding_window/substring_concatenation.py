@@ -92,7 +92,7 @@ def find_substring3(s: str, words: list[str]):
 
 if __name__ == "__main__":
     s = "barfoothefoobarman"
-    result = find_substring1(s, ["foo", "bar"])
+    result = find_substring3(s, ["foo", "bar"])
     print(result)
     assert result == [0, 9]
 
