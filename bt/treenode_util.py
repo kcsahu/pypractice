@@ -1,6 +1,6 @@
 from collections import deque
 
-from bt.tree_node import TreeNode
+from tree_node import TreeNode
 
 
 class TreeNodeUtil:
@@ -25,10 +25,13 @@ class TreeNodeUtil:
             dq.appendleft(root)
             while dq:
                 node = dq.pop()
-                res.append(node.val)
-                if node.left:
+                if node:
+                    res.append(node.val)
                     dq.appendleft(node.left)
-                if node.right:
                     dq.appendleft(node.right)
+                else:
+                    res.append(None)
+            while res and res[-1] is None:
+                res.pop()
         res_str = '->'.join(str(item) for item in res)
         print(msg, res_str)

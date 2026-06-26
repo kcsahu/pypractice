@@ -8,3 +8,6 @@ class TreeNode:
 
     def __str__(self):
         return str(self.val)
+    
+    def __repr__(self):
+        return f"Node(val={self.val})"

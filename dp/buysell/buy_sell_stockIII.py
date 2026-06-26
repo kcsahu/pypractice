@@ -17,20 +17,36 @@
 # Explanation: Buy on day 2 (price = 2) and sell on day 3 (price = 6), profit = 6-2 = 4.
 # Then buy on day 5 (price = 0) and sell on day 6 (price = 3), profit = 3-0 = 3.
 import sys
+import numpy as np
 
 
 def max_profit(prices: list, k: int) -> int:
     dp = [[-sys.maxsize, 0] for i in range(k + 1)]
     for ind, price in enumerate(prices):
-        for j in range(1, k+1):
-            dp[j][0] = max(dp[j][0], dp[j-1][1] - price)
+        for j in range(1, k + 1):
+            dp[j][0] = max(dp[j][0], dp[j - 1][1] - price)
             dp[j][1] = max(dp[j][1], dp[j][0] + price)
         # for j in range(k, 0, -1):
         #     dp[j][0] = max(dp[j][0], dp[j-1][1] - price)
         #     dp[j][1] = max(dp[j][1], dp[j][0] + price)
     return dp[k][1]
 
-if __name__=="__main__":
+
+def max_profit_np(prices: list, k: int) -> int:
+    dp = np.zeros((k + 1, 2), dtype="int64")
+    dp[:, 0] = -sys.maxsize
+    for i, price in enumerate(prices):
+        for j in range(k, 0, -1):
+            dp[j, 0] = max(dp[j, 0], dp[j - 1, 1] - price)
+            dp[j, 1] = max(dp[j, 1], dp[j, 0] + price)
+    return dp[k, 1]
+
+
+if __name__ == "__main__":
     res = max_profit([3, 3, 5, 0, 0, 3, 1, 4], 2)
+    print(res)
+    assert res == 6
+
+    res = max_profit_np([3, 3, 5, 0, 0, 3, 1, 4], 2)
     print(res)
     assert res == 6
