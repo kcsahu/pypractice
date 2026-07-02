@@ -24,11 +24,43 @@ def find_min(nums: list)-> int:
             end -= 1
     return nums[start]
 
-if __name__ == "__main__":
-    res = find_min([2,2,2,0,1])
-    print(res)
-    assert  res == 0
+import pytest
 
-    res = find_min([1,3,3])
-    print(res)
-    assert res == 1
+def test_example_with_duplicates():
+    assert find_min([2, 2, 2, 0, 1]) == 0
+
+def test_example_trailing_duplicates():
+    assert find_min([1, 3, 3]) == 1
+
+def test_no_rotation():
+    assert find_min([0, 1, 4, 4, 5, 6, 7]) == 0
+
+def test_rotated_with_duplicate_ends():
+    assert find_min([4, 5, 6, 7, 0, 1, 4]) == 0
+
+def test_all_same():
+    assert find_min([1, 1, 1, 1]) == 1
+
+def test_single_element():
+    assert find_min([5]) == 5
+
+def test_two_elements_rotated():
+    assert find_min([2, 1]) == 1
+
+def test_two_same_elements():
+    assert find_min([3, 3]) == 3
+
+def test_duplicates_around_pivot():
+    assert find_min([3, 3, 1, 3]) == 1
+
+def test_large_duplicate_prefix():
+    assert find_min([10, 10, 10, 10, 1, 10]) == 1
+
+def test_negative_numbers():
+    assert find_min([0, -1, -1]) == -1
+
+def test_mixed_negative_positive():
+    assert find_min([3, 3, -2, -2, 0]) == -2
+
+if __name__ == "__main__":
+    pytest.main([__file__, "-v"])
