@@ -6,7 +6,7 @@
 # Output: 6
 # Explanation: The subarray [4,-1,2,1] has the largest sum 6.
 
-def max_subarray(nums: list) -> int:
+def max_subarray(nums: list[int]) -> int:
    cur_max, max_val = nums[0], nums[0]
    for index in range(1, len(nums)):
        cur_max = max(nums[index], nums[index] + cur_max)
