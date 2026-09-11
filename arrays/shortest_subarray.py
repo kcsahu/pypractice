@@ -25,7 +25,7 @@ def shortest_subarray(nums: list, k: int) -> int:
     return min_length if min_length != sys.maxsize else -1
 
 
-## Sliding window + Variable window
+## Sliding window + Variable length
 ## Find the minimum size of the sub-array whose sum is equal to or more than the provided target value.
 ## nums = [2, 3, 1, 2, 4, 3], target=7, res (size of the subarray) =  2 (4 + 3)
 def min_subarray_sum(nums: list, target: int) -> int:
@@ -38,7 +38,7 @@ def min_subarray_sum(nums: list, target: int) -> int:
             left_ind += 1
     return min_len if min_len != sys.maxsize else -1
 
-## Sliding window + Fixed window
+## Sliding window + Fixed length
 ## Find the max value of a sub-array for a given size of the sub-array
 # arr = [2, 3, 1, 2, 4, 3], k = 2, Maximum sum of a subarray with size 2 = 7
 def max_sum_subarray(arr: list[int], k: int) -> int:
