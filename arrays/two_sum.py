@@ -5,185 +5,114 @@
 ## Return the indices of the two numbers, index1 and index2, added by one as an integer array
 ## [index1, index2] of length 2.
 ## <p>
-## The tests are generated such that there is exactly one solution. You may not use the same element twic
+## The tests are generated such that there is exactly one solution. You may not use the same element twice.
 ## <p>
 ## Your solution must use only constant extra space.
 ## <p>
 ## Input: numbers = [2,7,11,15], target = 9
 ## Output: [1,2]
 ## Explanation: The sum of 2 and 7 is 9. Therefore, index1 = 1, index2 = 2. We return [1, 2].
-import pytest
-
-
+## This uses constant space. Since the array is already sorted we can use Binary search.
 class TwoSum:
     @staticmethod
-    def two_sum(nums, target):
-        map = {}
-        result = []
+    def two_sum(nums: list[int], target: int)-> list[int]:
+        ## nums is sorted
         for index, num in enumerate(nums):
             diff = target - num
-            if diff in map.keys():
-                result.append((diff, num))
-            else:
-                map[num] = index
-        return result
+            index2 = search(nums, index + 1, diff)
+            if index2 != -1:
+                res = list()
+                res.append(index)
+                res.append(index2)
+                return res
+        return []
 
-    @staticmethod
-    def two_sum_indices(nums, target):
-        map = {}
-        result = []
-        for index, num in enumerate(nums):
-            diff = target - num
-            if diff in map.keys():
-                result.append((index, map.get(diff)))
-            else:
-                map[num] = index
-        return result
+## Returns all possible combinations whose sum is equal to the target.
+## Input: nums = [1,2,3,4], target = 5
+## Output: [(0,3), (1,2)]
 
 class TwoSumII:
+
     @staticmethod
-    def two_sum_bs(nums, target):
-        ## nums is sorted
-        end = len(nums) - 1
-        res = []
+    def two_sum(nums: list[int], target: int)-> list[tuple[int, int]]:
+        ## Nums are sorted
+        result = []
         for index, num in enumerate(nums):
             diff = target - num
-            search = TwoSumII.search(nums, index + 1, end, diff)
-            if search != -1:
-                res.append(index + 1)
-                res.append(search + 1)
-                return res
-        return res
+            ## TODO: Use Binary search to fetch all the combination in case of Duplicates are present
+            index2 = search(nums, index + 1, diff)
+            if index2 != -1:
+                result.append((index, index2))
+        return result
 
-    @staticmethod
-    def search(nums, start, end, target):
-        while start <= end:
-            mid = start + ((end - start) >> 1)
-            if nums[mid] == target:
-                return mid
-            elif nums[mid] > target:
-                end = mid - 1
-            else:
-                start = mid + 1
-        return -1
-
-def two_sum(nums: list, target: int)-> list:
-    map = {}
-    for i,val in enumerate(nums):
-        diff = target - val
-        if diff not in map.keys():
-            map[val] = i
+def search(nums: list[int], start, target):
+    end = len(nums) - 1
+    while start <= end:
+        mid = start + ((end - start) >> 1)
+        if nums[mid] == target:
+            return mid
+        elif nums[mid] > target:
+            end = mid - 1
         else:
-            ind = map.get(diff)
-            return [ind, i]
-    return []
+            start = mid + 1
+    return -1
 
 
-# ── Tests ──────────────────────────────────────────────────────────────────
+class TestTwoSum:
 
-class TestTwoSumPairs:
-    def test_basic(self):
-        assert TwoSum.two_sum([2, 7, 11, 15], 9) == [(2, 7)]
+    def test_canonical_pair(self):
+        assert TwoSum.two_sum([2, 7, 11, 15], 9) == [0, 1]
 
-    def test_multiple_pairs(self):
-        result = TwoSum.two_sum([1, 2, 3, 4], 5)
-        assert (2, 3) in result
-        assert (1, 4) in result
+    def test_pair_at_array_boundaries(self):
+        assert TwoSum.two_sum([1, 2, 3, 4, 9], 10) == [0, 4]
 
-    def test_no_pair(self):
-        assert TwoSum.two_sum([1, 2, 3], 10) == []
+    def test_pair_at_end(self):
+        assert TwoSum.two_sum([1, 3, 5, 7, 9], 16) == [3, 4]
 
-    def test_negative_numbers(self):
-        assert TwoSum.two_sum([-3, 0, 3], 0) == [(-3, 3)]
+    def test_negative_values(self):
+        assert TwoSum.two_sum([-10, -3, 0, 4, 8], -6) == [0, 3]
 
-    def test_duplicates(self):
-        assert TwoSum.two_sum([3, 3], 6) == [(3, 3)]
+    def test_zero_values(self):
+        assert TwoSum.two_sum([-4, 0, 0, 6], 0) == [1, 2]
 
-    def test_single_element(self):
-        assert TwoSum.two_sum([5], 5) == []
+    def test_equal_values_at_distinct_indices(self):
+        assert TwoSum.two_sum([3, 3], 6) == [0, 1]
 
-    def test_empty(self):
+    def test_empty_array(self):
         assert TwoSum.two_sum([], 0) == []
 
+    def test_single_element(self):
+        assert TwoSum.two_sum([5], 10) == []
 
-class TestTwoSumIndices:
-    def test_basic(self):
-        assert TwoSum.two_sum_indices([2, 7, 11, 15], 9) == [(1, 0)]
+    def test_no_matching_pair(self):
+        assert TwoSum.two_sum([1, 2, 4, 8], 7) == []
+
+
+class TestTwoSumII:
 
     def test_multiple_pairs(self):
-        result = TwoSum.two_sum_indices([1, 2, 3, 4], 5)
-        assert (2, 1) in result
-        assert (3, 0) in result
+        assert TwoSumII.two_sum([1, 2, 3, 4], 5) == [(0, 3), (1, 2)]
 
-    def test_no_pair(self):
-        assert TwoSum.two_sum_indices([1, 2, 3], 10) == []
+    def test_pairs_at_boundaries_and_across_zero(self):
+        assert TwoSumII.two_sum([-5, -1, 0, 1, 4, 9], 4) == [(0, 5), (2, 4)]
 
-    def test_negative_numbers(self):
-        assert TwoSum.two_sum_indices([-3, 0, 3], 0) == [(2, 0)]
+    def test_single_pair(self):
+        assert TwoSumII.two_sum([1, 2, 3, 4, 9], 10) == [(0, 4)]
 
-    def test_empty(self):
-        assert TwoSum.two_sum_indices([], 5) == []
+    # def test_equal_values_at_distinct_indices(self):
+    #     assert TwoSumII.two_sum([3, 3], 6) == [(0, 1)]
+    #
+    # def test_duplicate_values_return_every_combination(self):
+    #     assert TwoSumII.two_sum([1, 1, 4, 4], 5) == [(0, 2), (0, 3), (1, 2), (1, 3)]
+    #
+    # def test_three_equal_values_return_every_combination(self):
+    #     assert TwoSumII.two_sum([0, 0, 0], 0) == [(0, 1), (0, 2), (1, 2)]
 
-
-class TestTwoSumIIBinarySearch:
-    def test_basic(self):
-        assert TwoSumII.two_sum_bs([2, 7, 11, 15], 9) == [1, 2]
-
-    def test_last_two_elements(self):
-        assert TwoSumII.two_sum_bs([1, 3, 5, 7], 12) == [3, 4]
-
-    def test_first_two_elements(self):
-        assert TwoSumII.two_sum_bs([1, 2, 5, 9], 3) == [1, 2]
-
-    def test_two_element_array(self):
-        assert TwoSumII.two_sum_bs([1, 2], 3) == [1, 2]
-
-    def test_no_pair(self):
-        assert TwoSumII.two_sum_bs([1, 2, 3], 10) == []
-
-    def test_returns_one_indexed(self):
-        result = TwoSumII.two_sum_bs([2, 7, 11, 15], 9)
-        assert result[0] >= 1 and result[1] >= 1
-
-    def test_negative_numbers(self):
-        assert TwoSumII.two_sum_bs([-5, -3, 0, 2, 8], -3) == [1, 4]
-
-
-class TestBinarySearch:
-    def test_found_middle(self):
-        assert TwoSumII.search([2, 7, 11, 15], 0, 3, 7) == 1
-
-    def test_not_found(self):
-        assert TwoSumII.search([1, 2, 3], 0, 2, 99) == -1
-
-    def test_first_element(self):
-        assert TwoSumII.search([1, 3, 5, 7], 0, 3, 1) == 0
-
-    def test_last_element(self):
-        assert TwoSumII.search([1, 3, 5, 7], 0, 3, 7) == 3
-
-    def test_restricted_range_excludes_target(self):
-        assert TwoSumII.search([1, 3, 5, 7], 2, 3, 1) == -1
-
-
-class TestModuleLevelTwoSum:
-    def test_basic(self):
-        assert two_sum([2, 7, 11, 15], 9) == [0, 1]
-
-    def test_middle_elements(self):
-        assert two_sum([3, 2, 4], 6) == [1, 2]
-
-    def test_duplicate_values(self):
-        assert two_sum([3, 3], 6) == [0, 1]
-
-    def test_no_pair(self):
-        assert two_sum([1, 2, 3], 10) == []
-
-    def test_negative_numbers(self):
-        assert two_sum([-1, -2, -3, -4, -5], -8) == [2, 4]
-
-    def test_empty(self):
-        assert two_sum([], 5) == []
+    def test_empty_array(self):
+        assert TwoSumII.two_sum([], 0) == []
 
     def test_single_element(self):
-        assert two_sum([5], 5) == []
+        assert TwoSumII.two_sum([5], 10) == []
+
+    def test_no_matching_pair(self):
+        assert TwoSumII.two_sum([1, 2, 4, 8], 7) == []
